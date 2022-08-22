@@ -1,5 +1,5 @@
 const xhttp = new XMLHttpRequest();
-const endPoint = "http://localhost:9002";
+const endPoint = "https://letterblock.danyoo.ca/letterblock/js/";
 const numColumns = 5;
 const numRows = 7;
 const cssBorderedSquare = "square-border";
@@ -10,6 +10,7 @@ const congratsMessage = "Congratulations! You've finished Level 10!" + "<br>"
 
 const failedMessage = "You failed! Please Try Again." + "<br>"
 + "<button class=\"btn btn-primary\" onclick=\"startGame()\">Start</button>";
+const finalLevel = 7; //MAX 9
 
 let currentLevel = 0;
 let currentLetterPos = 0;
@@ -17,7 +18,7 @@ let numOfLives = 0;
 let arrWords = [];
 let positions = setPositionArray();
 
-
+localStorage.clear();
 
 xhttp.onreadystatechange = function(){
   if (xhttp.readyState == 4) {
@@ -58,8 +59,8 @@ function checkStatus(currentSquare) {
     if (currentLetterPos === 0) {
       fillOtherSquares();
 
-    } else if (currentLetterPos === (arrWords[currentLevel].length - 1)) {
-      if (currentLevel === 9) {
+    } else if (currentLetterPos === (arrWords[currentLevel].length - 1) && numOfLives < maxLives) {
+      if (currentLevel === finalLevel) {
         let messageSpace = document.getElementById('message');
         messageSpace.innerHTML = '';
         messageSpace.innerHTML = congratsMessage;
@@ -83,13 +84,13 @@ function checkStatus(currentSquare) {
 
   } else {
     ++numOfLives;
-    if (numOfLives === maxLives) {
+    if (numOfLives >= maxLives) {
       let messageSpace = document.getElementById('message');
         messageSpace.innerHTML = '';
-        messageSpace.innerHTML = congratsMessage;
+        messageSpace.innerHTML = failedMessage;
         return;
     }
-
+    currentLetterPos = 0;
     let messageSpace = document.getElementById('message');
     messageSpace.innerHTML = '';
     messageSpace.innerHTML = getMessageToDisplay();
@@ -101,7 +102,7 @@ function checkStatus(currentSquare) {
 
 const startGame = function() {
   checkLocalStorage();
-
+  checkLocalStorage();
 
   initGame();
   fillMap();
