@@ -3,7 +3,7 @@ const url = require('url');
 const fs = require("fs");
 
 const port = 9001;
-const hostName = "*";
+const approvedSource = "*";
 const GET = 'GET';
 const POST = 'POST';
 const maxLenghtWords = 12;
@@ -15,8 +15,8 @@ const dataDirectory = "../data/";
 http.createServer(function(req, res) {
     res.writeHead(200, {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin" : hostName,
-        "Access-Control-Allow-Methods" : hostName
+        "Access-Control-Allow-Origin" : approvedSource,
+        "Access-Control-Allow-Methods" : approvedSource
     });
 
     if (req.method === GET) {
@@ -41,7 +41,11 @@ getRequest = function(res) {
         fs.writeFileSync(dataDirectory + wordHistoryFile, jsonWordSetString);
 
     } else {
-
+        let arrWordSet = JSON.parse(jsonWordHistory);
+        if (arrWordSet[0].dateCreated !== getTodayDateFormatted()) {
+            console.log("The date does not match! Hooray!");
+            appendWordSetToHistory(jsonWordHistory);
+        }
     }
 
     res.end(getLatestWordSet());
@@ -67,7 +71,6 @@ function appendWordSetToHistory(jsonWord) {
     wordsInJson.unshift(todayWordSet);
     let jsonWordSetString = JSON.stringify(wordsInJson);
     fs.writeFileSync(dataDirectory + wordHistoryFile, jsonWordSetString);
-
 }
 
 
