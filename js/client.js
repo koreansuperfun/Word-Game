@@ -4,6 +4,12 @@ const numColumns = 5;
 const numRows = 7;
 const cssBorderedSquare = "square-border";
 const cssFilledSquare = "square-filled";
+const maxLives = 3;
+const congratsMessage = "Congratulations! You've finished Level 10!" + "<br>"
++ "<button class=\"btn btn-primary\" onclick=\"startGame()\">Start</button>";
+
+const failedMessage = "You failed! Please Try Again." + "<br>"
++ "<button class=\"btn btn-primary\" onclick=\"startGame()\">Start</button>";
 
 let currentLevel = 0;
 let currentLetterPos = 0;
@@ -56,8 +62,7 @@ function checkStatus(currentSquare) {
       if (currentLevel === 9) {
         let messageSpace = document.getElementById('message');
         messageSpace.innerHTML = '';
-        messageSpace.innerHTML = "Congratulations! You've finished Level 10!" + "<br>"
-          + "<button class=\"btn btn-primary\" onclick=\"startGame()\">Start</button>";
+        messageSpace.innerHTML = congratsMessage;
         return;
       }
 
@@ -77,8 +82,15 @@ function checkStatus(currentSquare) {
     ++currentLetterPos;
 
   } else {
-    let messageSpace = document.getElementById('message');
     ++numOfLives;
+    if (numOfLives === maxLives) {
+      let messageSpace = document.getElementById('message');
+        messageSpace.innerHTML = '';
+        messageSpace.innerHTML = congratsMessage;
+        return;
+    }
+
+    let messageSpace = document.getElementById('message');
     messageSpace.innerHTML = '';
     messageSpace.innerHTML = getMessageToDisplay();
     fillMap();
