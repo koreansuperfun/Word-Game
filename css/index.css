@@ -8,11 +8,6 @@ body {
     background-color: rgb(90, 141, 99);
 }
 
-#welcome {
-    color: white;
-
-}
-
 .map {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -24,6 +19,9 @@ body {
 
 }
 
+.info {
+    height:100px;
+}
 
 .square {
     width: 50px;
@@ -40,6 +38,11 @@ body {
     -moz-box-pack: center;
     justify-content: center;
     line-height: 1;
+}
+
+#welcome {
+    color: white;
+
 }
 
 #r {
