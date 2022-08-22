@@ -21,6 +21,8 @@ http.createServer(function(req, res) {
 
     if (req.method === GET) {
         getRequest(res);
+    } else if (req.method === POST) {
+        //TODO: For admin stat tracker later.
     }
 
 
@@ -80,7 +82,7 @@ function appendWordSetToHistory(jsonWord) {
  * @returns Array with random chosen words.
  */
 function generateWordSet() {
-    let setWordsReturn = new Array(maxLenghtWords + 1);
+    let setWordsReturn = new Array(maxLenghtWords + 1 - minLengthWords);
     let words = fs.readFileSync("../data/words.txt").toString().replace(/(\n)/gm, "").split("\r");
 
     // words.sort((a, b) => a.length - b.length);
@@ -89,8 +91,8 @@ function generateWordSet() {
 
     // words = words.filter(word => word.length > 1);
 
-    for (let i = minLengthWords; i <= maxLenghtWords; ++i) {
-        let wordArray = words.filter(word => word.length === i);
+    for (let i = 0; i <= maxLenghtWords - minLengthWords; ++i) {
+        let wordArray = words.filter(word => word.length === i + minLengthWords);
         setWordsReturn[i] = wordArray[Math.floor(Math.random()*wordArray.length)];
     }
     return setWordsReturn;
