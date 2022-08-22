@@ -7,8 +7,10 @@ const cssFilledSquare = "square-filled";
 
 let currentLevel = 0;
 let currentLetterPos = 0;
+let numOfLives = 0;
 let arrWords = [];
 let positions = setPositionArray();
+
 
 
 xhttp.onreadystatechange = function(){
@@ -23,20 +25,93 @@ xhttp.onreadystatechange = function(){
   }
 };
 
+function fillOtherSquares() {
+  for (let i = 1; i < arrWords[currentLevel].length; ++i) {
+    let position = positions[i];
+    let column = Math.floor(position / 5);
+    let row = position % 10;
+    if (row >=5) {
+      row -= 5;
+    }
+    let idName = column + "-" + row;
+
+    let squareElement = document.getElementById(idName);
+    let className = squareElement.getAttribute("class");
+    console.log("classname" + className);
+    let lastIndex = className.lastIndexOf(" ");
+    let newClassName = className.substring(0, lastIndex) + " square-filled";
+    squareElement.setAttribute("class", newClassName);
+  }
+}
+
+
+function checkStatus(currentSquare) {
+  console.log("Letter" + currentSquare.innerHTML);
+
+  if (currentSquare.innerHTML === arrWords[currentLevel].charAt(currentLetterPos)) {
+    if (currentLetterPos === 0) {
+      fillOtherSquares();
+
+    } else if (currentLetterPos === (arrWords[currentLevel].length - 1)) {
+      if (currentLevel === 9) {
+        let messageSpace = document.getElementById('message');
+        messageSpace.innerHTML = '';
+        messageSpace.innerHTML = "Congratulations! You've finished Level 10!" + "<br>"
+          + "<button class=\"btn btn-primary\" onclick=\"startGame()\">Start</button>";
+        return;
+      }
+
+      //Prepare next word for the game.
+      console.log("FINISHED LEVEL!");
+      currentLetterPos = 0;
+      ++currentLevel;
+      fillMap();
+      return;
+    }
+    currentSquare.innerHTML = '';
+    currentSquare.setAttribute("onclick", "");
+    let className = currentSquare.getAttribute("class");
+    let lastIndex = className.lastIndexOf(" ");
+    currentSquare.setAttribute("class", className.substring(0, lastIndex));
+
+    ++currentLetterPos;
+
+  } else {
+    let messageSpace = document.getElementById('message');
+    ++numOfLives;
+    messageSpace.innerHTML = '';
+    messageSpace.innerHTML = getMessageToDisplay();
+    fillMap();
+  }
+
+
+}
+
 const startGame = function() {
   checkLocalStorage();
 
-  currentLevel = 0;
-  let objJSON = JSON.parse(localStorage.wordSet);
-  arrWords = objJSON.arrayWords;
-  console.log(shuffle(positions));
-  positions = shuffle(positions);
 
+  initGame();
   fillMap();
 };
 
+function initGame() {
+  currentLevel = 0;
+  currentLetterPos = 0;
+  numOfLives = 0;
+  let objJSON = JSON.parse(localStorage.wordSet);
+  arrWords = objJSON.arrayWords;
+  // console.log(shuffle(positions));
+  positions = shuffle(positions);
+
+}
+
 
 function fillMap() {
+  let messageSpace = document.getElementById("message");
+  messageSpace.innerHTML = '';
+  messageSpace.innerHTML = getMessageToDisplay();
+
   let pixelMapDiv = document.getElementById('square');
   pixelMapDiv.innerHTML = '';
   for (let c = 0; c < numColumns; c++) {
@@ -59,9 +134,7 @@ function fillMap() {
 }
 
 function fillLettersInMap() {
-  console.log("arrived here!");
   let currentWord = arrWords[currentLevel];
-  console.log(currentWord);
   for (let i = 0; i < currentWord.length; ++i) {
     let position = positions[i];
     let column = Math.floor(position / 5);
@@ -70,7 +143,6 @@ function fillLettersInMap() {
       row -= 5;
     }
     let idName = column + "-" + row;
-    console.log("id name " + idName);
 
     let squareElement = document.getElementById(idName);
     squareElement.innerHTML = currentWord.charAt(i);
@@ -78,8 +150,12 @@ function fillLettersInMap() {
     let className = squareElement.getAttribute("class");
     let newClassName = className + " " + cssBorderedSquare;
     squareElement.setAttribute("class", newClassName);
+    squareElement.setAttribute("onclick", "checkStatus(this)");
   }
 }
+
+
+
 
 function shuffle(array) {
   var i = array.length,
@@ -137,6 +213,11 @@ function checkLocalStorage() {
   let day = today.getDate();
   let year = today.getFullYear();
   return month + "/" + day + "/" + year;
+}
+
+function getMessageToDisplay() {
+  return "LEVEL: " + currentLevel + "<br>" + "CURRENT WORD: " + arrWords[currentLevel]
+  + "<br>" + "You have " + (3 - numOfLives) + " lives left."
 }
 
 /**
