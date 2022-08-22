@@ -28,7 +28,7 @@ body {
     height: 50px;
     margin: 5px;
     border-radius: 10px;
-    border: 5px solid rgba(255, 255, 255, 0.541);
+    /* border: 5px solid rgba(255, 255, 255, 0.541); */
     font-size: 50px;
     text-align: center;
     display: flex;
@@ -40,23 +40,19 @@ body {
     line-height: 1;
 }
 
+.square-border {
+    border: 5px solid rgba(255, 255, 255, 0.541);
+}
+
+.square-filled {
+    border: 5px solid rgba(255, 255, 255, 0.541);
+    color: white;
+    background-color: white;
+}
+
+
+
 #welcome {
     color: white;
 
-}
-
-#r {
-    background-color: red;
-}
-
-#b {
-    background-color: blue;
-}
-
-#g {
-    background-color: #23ed12;
-}
-
-#y {
-    background-color: yellow;
 }
