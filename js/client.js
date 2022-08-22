@@ -1,5 +1,5 @@
 const xhttp = new XMLHttpRequest();
-const endPoint = "http://localhost:9001";
+const endPoint = "http://localhost:9002";
 const numColumns = 5;
 const numRows = 7;
 
@@ -14,11 +14,17 @@ xhttp.onreadystatechange = function(){
   }
 };
 
-const searchForWord = function() {
+const startGame = function() {
 
   xhttp.open("GET", endPoint, true);
   xhttp.send();
+  fillMap();
 };
+
+
+function checkLocalStorage() {
+  
+}
 
 
 function fillMap() {
@@ -33,6 +39,7 @@ function fillMap() {
           divToAdd.setAttribute("data_c", c);
           divToAdd.setAttribute("data_r", r);
           divToAdd.setAttribute("onclick", "changeColor(this)");
+
 
           pixelMapDiv.appendChild(divToAdd);
       }
