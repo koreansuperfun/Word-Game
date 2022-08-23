@@ -33,7 +33,7 @@ xhttp.onreadystatechange = function(){
 };
 
 function fillOtherSquares() {
-  for (let i = 1; i < arrWords[currentLevel].length; ++i) {
+  for (let i = 1; i < arrWords[currentLevel].length; i++) {
     let position = positions[i];
     let column = Math.floor(position / 5);
     let row = position % 10;
@@ -148,7 +148,7 @@ function fillMap() {
 
 function fillLettersInMap() {
   let currentWord = arrWords[currentLevel];
-  for (let i = 0; i < currentWord.length; ++i) {
+  for (let i = 0; i < currentWord.length; i++) {
     let position = positions[i];
     let column = Math.floor(position / 5);
     let row = position % 10;
@@ -191,7 +191,7 @@ function shuffle(array) {
 
 function setPositionArray() {
   let arrReturn = new Array(numColumns * numRows);
-  for (let i = 0; i < numColumns * numRows; ++i) {
+  for (let i = 0; i < numColumns * numRows; i++) {
     arrReturn[i] = i;
   }
   return arrReturn;
