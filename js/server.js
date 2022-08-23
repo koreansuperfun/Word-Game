@@ -91,7 +91,7 @@ function generateWordSet() {
 
     // words = words.filter(word => word.length > 1);
 
-    for (let i = 0; i <= maxLenghtWords - minLengthWords; ++i) {
+    for (let i = 0; i <= maxLenghtWords - minLengthWords; i++) {
         let wordArray = words.filter(word => word.length === i + minLengthWords);
         setWordsReturn[i] = wordArray[Math.floor(Math.random()*wordArray.length)];
     }
