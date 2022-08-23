@@ -33,7 +33,7 @@ xhttp.onreadystatechange = function(){
 };
 
 function fillOtherSquares() {
-  for (let i = 1; i < arrWords[currentLevel].length; i++) {
+  for (let i = 0; i < arrWords[currentLevel].length; i++) {
     let position = positions[i];
     let column = Math.floor(position / 5);
     let row = position % 10;
